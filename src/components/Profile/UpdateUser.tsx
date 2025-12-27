@@ -1,20 +1,21 @@
 import {useState} from "react";
 import EditProfile from "./EditProfile.tsx";
 import ChangePassword from "./ChangePassword.tsx";
+import {UPDATE_MODE_CHANGE_PASSWORD, UPDATE_MODE_DAFAULT, UPDATE_MODE_EDIT_PROFILE} from "../../utils/constants.ts";
 
 
 const UpdateUser = () => {
-    const [updateMode, setUpdateMode] = useState('default');
+    const [updateMode, setUpdateMode] = useState(UPDATE_MODE_DAFAULT);
     switch (updateMode) {
-        case 'edit profile':
+        case UPDATE_MODE_EDIT_PROFILE:
             return <EditProfile/>;
-        case 'change password':
+        case UPDATE_MODE_CHANGE_PASSWORD:
             return <ChangePassword/>;
         default:
             return (
                 <div>
-                    <button onClick={() => setUpdateMode('edit profile')}>Edit profile</button>
-                    <button onClick={() => setUpdateMode('change password')}>Change password</button>
+                    <button onClick={() => setUpdateMode(UPDATE_MODE_EDIT_PROFILE)}>Edit profile</button>
+                    <button onClick={() => setUpdateMode(UPDATE_MODE_CHANGE_PASSWORD)}>Change password</button>
                 </div>
             )
     }
