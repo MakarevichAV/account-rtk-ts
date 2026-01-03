@@ -9,17 +9,17 @@ const Index = () => {
     const dispatch = useAppDispatch();
 
     const handleClickLogout = () => {
-        dispatch(clearToken())
-        dispatch(clearUser())
         localStorage.removeItem("token")
         localStorage.removeItem("userData");
+        dispatch(clearToken())
+        dispatch(clearUser())
     }
 
     return (
         <div>
-            <ProfileData />
+            <ProfileData/>
             <button onClick={handleClickLogout}>Logout</button>
-            <UpdateUser />
+            <UpdateUser/>
         </div>
     );
 

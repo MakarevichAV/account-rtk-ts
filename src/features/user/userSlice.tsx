@@ -14,7 +14,7 @@ const userSlice = createSlice({
         changeLastName: (state, action) => {
             state.lastName = action.payload;
         },
-        clearUser: () => initialState
+        clearUser: () => {}
     },
     extraReducers: (builder) => {
         builder
