@@ -5,7 +5,7 @@ import Guest from "./components/Guest";
 
 function App() {
     // TODO: Implement token retrieval from global state logic
-    const token = '';
+    const token = '55';
     return (
         <Routes>
             <Route

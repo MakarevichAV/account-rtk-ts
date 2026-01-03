@@ -11,12 +11,16 @@ const ChangePassword = ({close}: ChangePasswordProps) => {
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const handleClickSave = () => {
-        // TODO: Implement change password save logic
-        alert('Profile changed');
-        close()
+        if (newPassword === confirmPassword) {
+            // TODO: Implement change password save logic
+            alert('Profile changed');
+            close();
+        } else {
+            alert('Password do not match!');
+        }
     }
 
-    const handleClickClear  = () => {
+    const handleClickClear = () => {
         setOldPassword('');
         setNewPassword('');
         setConfirmPassword('');
