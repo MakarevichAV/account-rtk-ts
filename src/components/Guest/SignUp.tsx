@@ -1,4 +1,6 @@
 import {useState} from 'react';
+import {useAppDispatch} from "../../app/hooks.ts";
+import {registerUser} from "../../features/api/accountApi.ts";
 
 const SignUp = () => {
     const [login, setLogin] = useState('')
@@ -6,9 +8,10 @@ const SignUp = () => {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
 
+    const dispatch = useAppDispatch();
+
     const handleClickSignUp = () => {
-        //TODO: Implement sign in logic
-        alert("Sign Up successfully")
+        dispatch(registerUser({login, password, firstName, lastName}));
     }
 
     const handleClickClear = () => {
@@ -52,7 +55,7 @@ const SignUp = () => {
                     onChange={(e) => setLastName(e.target.value)}
                 />
             </label>
-            <button onClick={handleClickSignUp}>Sign In</button>
+            <button onClick={handleClickSignUp}>Sign Up</button>
             <button onClick={handleClickClear}>Clear</button>
         </>
     );
