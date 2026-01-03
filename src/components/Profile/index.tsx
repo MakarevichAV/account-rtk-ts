@@ -22,6 +22,7 @@ const Index = () => {
             <UpdateUser />
         </div>
     );
+
 };
 
 export default Index;
