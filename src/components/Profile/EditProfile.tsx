@@ -1,6 +1,6 @@
 import {useState} from "react";
-import {useAppDispatch} from "../../app/hooks.ts";
-import {updateUser} from "../../features/api/accountApi.ts";
+import {useAppSelector} from "../../app/hooks.ts";
+import {useFetchUserQuery, useUpdateUserMutation} from "../../features/api/accountApi.ts";
 
 interface EditProfileProps {
     close: () => void;
@@ -9,10 +9,19 @@ interface EditProfileProps {
 const EditProfile = ({close}: EditProfileProps) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const dispatch = useAppDispatch();
 
-    const handleClickSave = () => {
-        dispatch(updateUser({firstName, lastName}));
+    const token = useAppSelector(state => state.token);
+    const [updateUser] = useUpdateUserMutation()
+    const {data: userData} = useFetchUserQuery(token)
+    const handleClickSave = async () => {
+        try {
+            const {error} = await updateUser({user: {firstName,  lastName}, token, login: userData!.login});
+            if (error) {
+                console.log('update error', error);
+            }
+        } catch (e) {
+            console.log('unknown error', e);
+        }
         close();
     }
 
