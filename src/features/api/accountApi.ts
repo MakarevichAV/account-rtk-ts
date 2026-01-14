@@ -2,11 +2,23 @@ import {base_url} from "../../utils/constants.ts";
 import type {UserData, UserProfile, UserRegister} from "../../utils/types";
 import {createApi} from "@reduxjs/toolkit/query/react";
 import {fetchBaseQuery} from "@reduxjs/toolkit/query";
+import type {RootState} from "../../app/store.ts";
+
+const authEndpoints = ['updateUser']
 
 export const accountApi = createApi({
     reducerPath: "account",
     tagTypes: ['profile'],
-    baseQuery: fetchBaseQuery({ baseUrl: base_url }),
+    baseQuery: fetchBaseQuery({
+        baseUrl: base_url,
+        prepareHeaders: (headers, {getState, endpoint}) => {
+            if (authEndpoints.includes(endpoint)) {
+                const token = (getState() as RootState).token;
+                headers.set("Authorization", token);
+            }
+            return headers
+        }
+    }),
     endpoints: (builder) => ({
         registerUser: builder.mutation<UserProfile, UserRegister>({
             query: user => ({
@@ -25,14 +37,11 @@ export const accountApi = createApi({
             }),
             providesTags: ['profile'] // Привязываем запрос к тэгу , который при инвалидации заставит сделать этот запрос и взять данные с сервера а не с кэша
         }),
-        updateUser: builder.mutation<UserProfile, {login: string,  user: Omit<UserData, 'login'>, token: string }>({
-            query: ({user, login, token}) => ({
+        updateUser: builder.mutation<UserProfile, {login: string,  user: Omit<UserData, 'login'>}>({
+            query: ({user, login}) => ({
                 url: `account/user/${login}`,
                 method: 'PATCH',
-                body: user,
-                headers: {
-                    Authorization: token
-                }
+                body: user
             }),
             invalidatesTags: ['profile'] // отменяет кэш, чтобы когда фетчЮзер делаем - взять новые данные
         }),

@@ -15,7 +15,7 @@ const EditProfile = ({close}: EditProfileProps) => {
     const {data: userData} = useFetchUserQuery(token)
     const handleClickSave = async () => {
         try {
-            const {error} = await updateUser({user: {firstName,  lastName}, token, login: userData!.login});
+            const {error} = await updateUser({user: {firstName,  lastName}, login: userData!.login});
             if (error) {
                 console.log('update error', error);
             }
