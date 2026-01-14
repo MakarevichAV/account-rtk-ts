@@ -5,6 +5,7 @@ import {fetchBaseQuery} from "@reduxjs/toolkit/query";
 
 export const accountApi = createApi({
     reducerPath: "account",
+    tagTypes: ['profile'],
     baseQuery: fetchBaseQuery({ baseUrl: base_url }),
     endpoints: (builder) => ({
         registerUser: builder.mutation<UserProfile, UserRegister>({
@@ -21,7 +22,8 @@ export const accountApi = createApi({
                 headers: {
                     Authorization: token
                 }
-            })
+            }),
+            providesTags: ['profile'] // Привязываем запрос к тэгу , который при инвалидации заставит сделать этот запрос и взять данные с сервера а не с кэша
         }),
         updateUser: builder.mutation<UserProfile, {login: string,  user: Omit<UserData, 'login'>, token: string }>({
             query: ({user, login, token}) => ({
@@ -31,7 +33,8 @@ export const accountApi = createApi({
                 headers: {
                     Authorization: token
                 }
-            })
+            }),
+            invalidatesTags: ['profile'] // отменяет кэш, чтобы когда фетчЮзер делаем - взять новые данные
         }),
         changePassword: builder.mutation<void, {token: string,  newPassword: string}>({
             query: ({token, newPassword}) => ({
